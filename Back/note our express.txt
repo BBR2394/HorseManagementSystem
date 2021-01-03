@@ -1,0 +1,17 @@
+note our express
+juste $> node app.js ->  lance l'app
+
+Pour lancer en mode debug :
+DEBUG=* node app.js
+
+# retour de express:
+res.send("[string]")
+__dirname -> le dossier ou est l'executable
+res.sendFile(__dirname + '/views/...')
+
+# pour le routage 
+-> j'ai specifiquement utiliser un element secial our le routing
+        -> a retravailler
+
+# Pour ostgre sql
+https://blog.logrocket.com/nodejs-expressjs-postgresql-crud-rest-api-example/

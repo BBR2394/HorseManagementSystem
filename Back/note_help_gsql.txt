@@ -1,0 +1,5 @@
+# note and help for postgre
+
+\dt -> to get list of the table 
+
+psql -d hms -U Baptiste -> pour se connecter
