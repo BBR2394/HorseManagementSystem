@@ -1,0 +1,1 @@
+DELETE FROM horses WHERE horse_id = X;

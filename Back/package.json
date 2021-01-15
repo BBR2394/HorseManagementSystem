@@ -1,0 +1,32 @@
+{
+  "name": "hms-api",
+  "version": "1.0.0",
+  "description": "Here is the node js api/back part for the HMS software",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BBR2394/HorseManagementSystem.git"
+  },
+  "keywords": [
+    "hms"
+  ],
+  "author": "Baptiste B.R.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BBR2394/HorseManagementSystem/issues"
+  },
+  "homepage": "https://github.com/BBR2394/HorseManagementSystem#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "debug": "^4.3.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "nodemon": "^2.0.4",
+    "passport": "^0.4.1",
+    "pg": "^8.5.1"
+  }
+}
