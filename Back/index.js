@@ -27,7 +27,10 @@ var path = require('path');
 const bodyParser = require('body-parser')
 // package for the db
 const postgresql = require('pg').Pool;
-
+// passort
+const passort = require('passport');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 /**
  * postgresql configuration
  */
@@ -43,15 +46,24 @@ const poolpgsql = new postgresql({
   port: 5432,
 })
 
-/**
- * external module (files)
- */
-var stable = require('./hms_stable.js')
-
-app.use('/stables', stable);
-
 //to set body arser to read json in the body
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser);
+app.use(session({secret: 'bonjour'}));
+
+/**
+ * external module (files)
+ * we add a file for route
+ */
+var stables = require('./hms_stable.js')
+var horseRoute = require('./horses_request/horse_routes.js')
+var authentRoutes = require('./authent/authenticationRoutes.js')
+
+// the routes /stable -> hms_stable.js file #stable
+app.use('/stables', stables);
+app.use('/hrs', horseRoute);
+app.use('/authent', authentRoutes);
 
 app.route('/book')
   .get(function(req, res) {
@@ -67,6 +79,10 @@ app.route('/book')
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+
+app.get('/form', (req, res) => {
+  res.sendFile(__dirname + '/test_views/form.html')
+});
 
 /** 
  * transferé dans horses_request/get_request
@@ -91,6 +107,8 @@ app.get('/horse',(req, res) => {
     res.send('on GET /horse So only one horse with name or id')
 })
 
+
+
 //transferé dans horses_request/get_request
 /*app.post('/horses', (req, res) => {
   console.log("LOG: POST on /horses");
@@ -108,4 +126,7 @@ app.listen(port, () => {
   debug("LOG : app started")
 })
 
+// we import another module #horses
 require('./horses_request/get_request.js')(app, poolpgsql);
+require('./authent/authentication.js')(app, bodyParser);
+require('./session/passppport.js')(app);

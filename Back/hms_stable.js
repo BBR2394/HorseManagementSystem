@@ -9,6 +9,7 @@ stableRouter.use(function timeLog(req, res, next) {
 
 // define the home page route
 stableRouter.get('/', function(req, res) {
+  console.log("GET on /stable /")
   res.send('Stables home page');
 });
 
