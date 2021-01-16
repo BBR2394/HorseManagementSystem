@@ -129,4 +129,4 @@ app.listen(port, () => {
 // we import another module #horses
 require('./horses_request/get_request.js')(app, poolpgsql);
 require('./authent/authentication.js')(app, bodyParser);
-require('./session/passppport.js')(app);
+require('./session/passport.js')(app);
