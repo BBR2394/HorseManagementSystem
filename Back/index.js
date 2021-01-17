@@ -22,15 +22,17 @@ var debug = require('debug')('app');
 const chalk = require('chalk');
 // useful package to manage path to a file
 var path = require('path');
-//package used in order to parse the body from a POST request
-// otherwise, exppress doesnt read the body ...
-const bodyParser = require('body-parser')
 // package for the db
 const postgresql = require('pg').Pool;
 // passort
 const passort = require('passport');
 const cookieParser = require('cookie-parser');
+//package used in order to parse the body from a POST request
+// otherwise, exppress doesnt read the body ...
+const bodyParser = require('body-parser')
+// for passport too
 const session = require('express-session');
+
 /**
  * postgresql configuration
  */
@@ -46,12 +48,18 @@ const poolpgsql = new postgresql({
   port: 5432,
 })
 
+//to moove in a config directory
+// initialize passport
+var sessionRoutes = require('./session/passport.js')
+
 //to set body arser to read json in the body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser);
+//!!! warning dont forget the () https://stackoverflow.com/questions/23207303/no-response-from-simple-expressjs-app
+app.use(cookieParser());
 app.use(session({secret: 'bonjour'}));
-
+//warning : this require must be here because it initialize passport
+require('./session/passport.js')(app);
 /**
  * external module (files)
  * we add a file for route
@@ -60,10 +68,13 @@ var stables = require('./hms_stable.js')
 var horseRoute = require('./horses_request/horse_routes.js')
 var authentRoutes = require('./authent/authenticationRoutes.js')
 
+
 // the routes /stable -> hms_stable.js file #stable
 app.use('/stables', stables);
 app.use('/hrs', horseRoute);
 app.use('/authent', authentRoutes);
+app.use('/session', sessionRoutes);
+
 
 app.route('/book')
   .get(function(req, res) {
@@ -128,5 +139,4 @@ app.listen(port, () => {
 
 // we import another module #horses
 require('./horses_request/get_request.js')(app, poolpgsql);
-require('./authent/authentication.js')(app, bodyParser);
-require('./session/passport.js')(app);
+//require('./authent/authentication.js')(app, bodyParser);
