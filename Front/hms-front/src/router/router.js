@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Horse from '../components/Horse.vue'
-import HorseList from '../components/HorseList.vue'
+import HorseList from '../views/HorseList.vue'
 Vue.use(VueRouter)
 
 const routes = [

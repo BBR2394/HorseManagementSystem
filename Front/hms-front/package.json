@@ -8,7 +8,17 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "autoprefixer": "^10.2.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015-ie": "^6.7.0",
+    "bulma": "^0.9.1",
+    "bulma-start": "0.0.4",
     "core-js": "^3.6.5",
+    "node-sass": "^5.0.0",
+    "postcss": "^8.2.4",
+    "postcss-cli": "^8.3.1",
+    "sass-loader": "^10.1.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"
   },

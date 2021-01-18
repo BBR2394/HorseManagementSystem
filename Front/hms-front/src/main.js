@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from './router/router.js'
+//under, it is for bulma css
+import './../node_modules/bulma/css/bulma.css'
 
 Vue.config.productionTip = false
 
