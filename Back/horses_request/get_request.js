@@ -23,9 +23,9 @@ module.exports = function(app, pgsql) {
         }
         else {
             pgsql.query(`SELECT * FROM ${horses_table_name}`, (error, result) => {
-                console.log(result.rows);
+                console.log(result);
                 if (error) {
-                    debug("LOG-1 : error when query on /horses");
+                    //debug("LOG-1 : error when query on /horses");
                     console.log("LOG-1 : error when query on /horses");
                     res.status(400).send('ERROR on GET /horses index.js')
                 }

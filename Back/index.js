@@ -23,7 +23,7 @@ const chalk = require('chalk');
 // useful package to manage path to a file
 var path = require('path');
 // package for the db
-const postgresql = require('pg').Pool;
+var postgresql = require('pg').Pool;
 // passort
 const passort = require('passport');
 const cookieParser = require('cookie-parser');
@@ -64,14 +64,18 @@ require('./session/passport.js')(app);
  * external module (files)
  * we add a file for route
  */
-var stables = require('./hms_stable.js')
+var stables = require('./stable_request/hms_stable.js')
 var horseRoute = require('./horses_request/horse_routes.js')
 var authentRoutes = require('./authent/authenticationRoutes.js')
+var coatRoutes = require('./characteristic_routes/coat_route.js');
 
-
+// #routes
 // the routes /stable -> hms_stable.js file #stable
+
 app.use('/stables', stables);
 app.use('/hrs', horseRoute);
+app.use('/characteristic', coatRoutes);
+
 app.use('/authent', authentRoutes);
 app.use('/session', sessionRoutes);
 
