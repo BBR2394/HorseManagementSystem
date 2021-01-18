@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Horse from '../components/Horse.vue'
 import HorseList from '../views/HorseList.vue'
+import StablesList from '../views/StablesList.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,6 +21,11 @@ const routes = [
     path: '/horselist',
     name: 'HorseList',
     component: HorseList
+  },
+  {
+    path: '/stableslist',
+    name: 'StablesList',
+    component: StablesList
   },
   {
     path: '/about',
