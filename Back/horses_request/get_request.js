@@ -9,11 +9,15 @@ module.exports = function(app, pgsql) {
         }
         if (params.name != null) {
             console.log("il y a un nom dans la requete")
-            pgsql.query(`SELECT * FROM ${horses_table_name} WHERE name='${params.name}'`, (error, result) => {
-                console.log(result.rows);
+            console.log(params.name)
+            pgsql.query(`SELECT hrs.horse_name, size, lastname, firstname, color_name 
+            FROM ${horses_table_name}  hrs
+            LEFT JOIN horse_owner ownr ON ownr.owner_id = hrs.current_owner
+            LEFT JOIN coat ct ON ct.id = hrs.coat
+            WHERE horse_name='${params.name}'`, (error, result) => {
+                console.log("le resultat : " + result);
                 if (error) {
-                    debug("LOG-1bis : error when query on /horses?name=");
-                    console.log("LOG-1bis : error when query on /horses?name=");
+                    console.log("LOG-1bis : error when query on /horses?name="+params.name);
                     res.status(400).send('ERROR on GET /horses index.js')
                 }
                 else {
@@ -24,8 +28,8 @@ module.exports = function(app, pgsql) {
         else {
             pgsql.query(`SELECT hrs.horse_name, size, lastname, firstname, color_name 
             FROM ${horses_table_name} hrs
-            INNER JOIN horse_owner ownr ON ownr.owner_id = hrs.current_owner
-            INNER JOIN coat ct ON ct.id = hrs.coat`, (error, result) => {
+            LEFT JOIN horse_owner ownr ON ownr.owner_id = hrs.current_owner
+            LEFT JOIN coat ct ON ct.id = hrs.coat`, (error, result) => {
                 console.log(result);
                 if (error) {
                     //debug("LOG-1 : error when query on /horses");
@@ -48,7 +52,7 @@ module.exports = function(app, pgsql) {
             res.status(206).send("missing information");
         }
         else {
-            pgsql.query(`INSERT INTO ${horses_table_name} (name) VALUES ($1)`, [name], (error, results) => {
+            pgsql.query(`INSERT INTO ${horses_table_name} (horse_name) VALUES ($1)`, [name], (error, results) => {
                 if (error) {
                     throw error
                 }
@@ -65,7 +69,7 @@ module.exports = function(app, pgsql) {
             name: req.query.name
         }
         if (params.name != null) {
-            pgsql.query(`DELETE FROM ${horses_table_name} WHERE name = $1`, [params.name], (error, results) => {
+            pgsql.query(`DELETE FROM ${horses_table_name} WHERE horse_name = $1`, [params.name], (error, results) => {
                 if (error) {
                   throw error
                 }
