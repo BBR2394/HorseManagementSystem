@@ -22,7 +22,10 @@ module.exports = function(app, pgsql) {
             });
         }
         else {
-            pgsql.query(`SELECT * FROM ${horses_table_name}`, (error, result) => {
+            pgsql.query(`SELECT hrs.horse_name, size, lastname, firstname, color_name 
+            FROM ${horses_table_name} hrs
+            INNER JOIN horse_owner ownr ON ownr.owner_id = hrs.current_owner
+            INNER JOIN coat ct ON ct.id = hrs.coat`, (error, result) => {
                 console.log(result);
                 if (error) {
                     //debug("LOG-1 : error when query on /horses");
