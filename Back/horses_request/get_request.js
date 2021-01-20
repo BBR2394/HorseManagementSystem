@@ -10,7 +10,7 @@ module.exports = function(app, pgsql) {
         if (params.name != null) {
             console.log("il y a un nom dans la requete")
             console.log(params.name)
-            pgsql.query(`SELECT hrs.horse_name, size, lastname, firstname, color_name 
+            pgsql.query(`SELECT hrs.horse_id, hrs.horse_name, size, lastname, firstname, color_name 
             FROM ${horses_table_name}  hrs
             LEFT JOIN horse_owner ownr ON ownr.owner_id = hrs.current_owner
             LEFT JOIN coat ct ON ct.id = hrs.coat
@@ -26,7 +26,7 @@ module.exports = function(app, pgsql) {
             });
         }
         else {
-            pgsql.query(`SELECT hrs.horse_name, size, lastname, firstname, color_name 
+            pgsql.query(`SELECT hrs.horse_id, hrs.horse_name, size, lastname, firstname, color_name 
             FROM ${horses_table_name} hrs
             LEFT JOIN horse_owner ownr ON ownr.owner_id = hrs.current_owner
             LEFT JOIN coat ct ON ct.id = hrs.coat`, (error, result) => {

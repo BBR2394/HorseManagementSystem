@@ -32,6 +32,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser')
 // for passport too
 const session = require('express-session');
+//CORS to authorize any call on the api (to check for more information)
+var cors = require('cors')
 
 /**
  * postgresql configuration
@@ -58,6 +60,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 //!!! warning dont forget the () https://stackoverflow.com/questions/23207303/no-response-from-simple-expressjs-app
 app.use(cookieParser());
 app.use(session({secret: 'bonjour'}));
+app.use(cors());
 //warning : this require must be here because it initialize passport
 require('./session/passport.js')(app);
 /**
