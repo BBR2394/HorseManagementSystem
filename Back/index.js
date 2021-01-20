@@ -71,14 +71,14 @@ var stables = require('./stable_request/hms_stable.js')
 var horseRoute = require('./horses_request/horse_routes.js')
 var authentRoutes = require('./authent/authenticationRoutes.js')
 var coatRoutes = require('./characteristic_routes/coat_route.js');
-
+var ownerRoutes = require('./horses_request/owner_route.js');
 // #routes
 // the routes /stable -> hms_stable.js file #stable
 
 app.use('/stables', stables);
 app.use('/hrs', horseRoute);
 app.use('/characteristic', coatRoutes);
-
+app.use('/owners', ownerRoutes)
 app.use('/authent', authentRoutes);
 app.use('/session', sessionRoutes);
 

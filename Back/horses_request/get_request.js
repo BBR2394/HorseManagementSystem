@@ -1,6 +1,8 @@
 module.exports = function(app, pgsql) {
     
     const horses_table_name = "horses"
+    const sex_table_name = "sex"
+    const coat_table_name = "coat"
 
     app.get('/horses', (req, res) => {
         console.log("LOG: GET on /horses");
@@ -45,20 +47,47 @@ module.exports = function(app, pgsql) {
 
     app.post('/horses', (req, res) => {
         console.log("LOG: POST on /horses");
-        console.log(req);
-        console.log(req.body);
-        const { name } = req.body;
+        //console.log(req);
+        const { horse_name, coat, sex } = req.body;
+        console.log(horse_name)
+        console.log(coat)
+        console.log(sex)
+        var sex_id = null
+        var coat_id = null
+        var owner_id = null
         if (req.body == null) {
             res.status(206).send("missing information");
         }
         else {
-            pgsql.query(`INSERT INTO ${horses_table_name} (horse_name) VALUES ($1)`, [name], (error, results) => {
+            /*if (coat != null) {
+                console.log(`SELECT color_name FROM ${coat_table_name} WHERE color_name = ${coat}`);
+                coat_id = pgsql.query(`SELECT color_name FROM ${coat_table_name} WHERE color_name = $1`, [coat], (error, results) => {
+                    if (error) {
+                        throw error
+                    }
+                    else {
+                        console.log(results);
+                    }
+                })
+            }
+            if (sex != null) {
+                sex_id = pgsql.query(`SELECT sex_name FROM ${sex_table_name} WHERE sex_name = $1`, [sex], (error, results) => {
+                    if (error) {
+                        throw error
+                    }
+                    else {
+                        console.log(results);
+                    }
+                })
+            }*/
+            console.log(`sex id = ${sex_id} et coat id ${coat_id} `);
+            pgsql.query(`INSERT INTO ${horses_table_name} (horse_name, current_owner, sex, coat) VALUES ($1, $2, $3, $4)`, [horse_name, owner_id, sex_id, coat_id], (error, results) => {
                 if (error) {
                     throw error
                 }
                 else {
                     console.log(results);
-                    res.status(201).send(`Horse added ${name}`)
+                    res.status(201).send(`Horse added ${horse_name}`)
                 }
             })
         }

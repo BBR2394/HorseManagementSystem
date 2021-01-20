@@ -14,7 +14,7 @@ characteristicRouter.get('/', function (req, res) {
 characteristicRouter.get('/coat', function (req, res) {
     console.log("GET on /coat /")
     pgsql_pool.query(`SELECT * FROM ${coat_table_name}`, (error, result) => {
-        console.log(result);
+        console.log(result.rows);
         if (error) {
             //debug("LOG-1 : error when query on /horses");
             console.log("LOG-1 : error when query on /coat");
@@ -30,7 +30,7 @@ characteristicRouter.get('/coat', function (req, res) {
 characteristicRouter.get('/sex', function (req, res) {
     console.log("GET on /sex /")
     pgsql_pool.query(`SELECT * FROM ${sex_table_name}`, (error, result) => {
-        console.log(result);
+        console.log(result.rows);
         if (error) {
             //debug("LOG-1 : error when query on /horses");
             console.log("LOG-1 : error when query on /sex");
@@ -42,10 +42,6 @@ characteristicRouter.get('/sex', function (req, res) {
     });
 });
 
-// define the home page route
-characteristicRouter.get('/other', function (req, res) {
-    console.log("GET on /other /")
-    res.send('other home page');
-});
+
 
 module.exports = characteristicRouter;
