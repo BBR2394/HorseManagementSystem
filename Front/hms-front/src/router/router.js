@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import NiouHome from '../views/NiouHome.vue'
 import Horse from '../components/Horse.vue'
 import HorseList from '../views/HorseList.vue'
 import StablesList from '../views/StablesList.vue'
@@ -11,6 +12,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/niouhome',
+    name: 'NiouHome',
+    component: NiouHome
   },
   {
     path: '/horse',
