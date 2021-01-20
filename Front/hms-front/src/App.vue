@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <div id="nav">
+        <NavBar>
+    </NavBar>
+    <!--div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> | 
       <router-link to="/horselist">Horses</router-link> | 
       <router-link to="/stableslist">Stables</router-link> | 
       <router-link to="/niouhome">New Home</router-link>
-    </div>
+    </div-->
     <router-view/>
-    <NavBar>
-    </NavBar>
+
   </div>
 </template>
 

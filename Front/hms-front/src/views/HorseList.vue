@@ -1,6 +1,8 @@
 <template >
   <div>
     <div class="container">
+      <div class="columns">
+  <div class="column is-three-fifths">
     <h1>Liste des chevaux</h1>
     <ul class="horse-list">
       <li v-for="horse in horses" :key="horse.id" class="menu-list horse-elem-in-list">
@@ -15,7 +17,7 @@
     </ul>
     <p v-if="message">{{ message }}</p>
     <div v-if="selectedHorse">
-      <div class="field">{{ fullInfo }}</div>
+      <div class="field">{{ selectedHorse.horse_name | fulli }}</div>
       <label for="show" class="checkbox">
         <input type="checkbox" class="is-primary" id="show" v-model="showMore" />
       </label>
@@ -26,15 +28,41 @@
         <div class="field">Last name Owner : {{ selectedHorse.lastname }}</div>
       </div>
     </div>
+    <!-- button to add a horse -->
     <div>
       <button class="button is-primary " v-on:click="showNewCard" v-show="!newHorse">+</button>
     </div>
     <!-- to add new horse -->
     <div v-show="newHorse">
-        <input type="text" id="name" placeholder="new horse name" required minlength="2" maxlength="255" v-model="newHorseCard.name">
+        {{ fullInfo }}
+        <div class="field">
+          <div class="control">
+            <input class="input is-primary" id="name" type="text" placeholder="new horse name" required minlength="2" maxlength="255" v-model="newHorseCard.horse_name">
+            <div class="select">
+              <select v-model="ownerSelected">
+                <option v-for="owner in owners" :key="owner.id" >{{ ownerNameFormated(owner) }}</option>
+              </select>
+            </div>
+            <div class="select">
+              <select v-model="sexSelected">
+                <option v-for="sx in sexs" :key="sx.id" >{{ sx.sex_name }}</option>
+              </select>
+            </div>
+            <div class="select">
+              <select v-model="coatSelected">
+                <option v-for="ct in coats" :key="ct.id" >{{ ct.color_name }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
         <p>{{ newHorseCard.name }} </p>
         <button class="button is-primary is-rounded" v-on:click="ValidateNewwHorse" >Validate</button>
     </div>
+  </div>
+    <div class="column">
+    Second column
+  </div>
+      </div>
     </div>
   </div>
 </template>
@@ -126,21 +154,38 @@ export default {
   data() {
     return {
       selectedHorse: undefined,
+      ownerSelected: undefined,
+      sexSelected: undefined,
+      coatSelected: undefined,
       showMore: false,
       message: "horse list",
       newHorse: false,
       horses: [],
+      owners: [],
+      coats: [],
+      sexs: [],
       counter: 0,
-      coat: [],
       newHorseCard: {
-          "name": "Rien",
-          "coat": "",
+            horse_name: null,
+            size: null,
+            coat: null,
+            sex: null,
+            owner: null
       }
     };
   },
+  filters: {
+        fulli: function(str) {
+            return `Le cheval sélectionné est : ${str}`;
+        }
+    },
   computed: {
     fullInfo() {
-      return `Le cheval selectionné est : ${this.selectedHorse.horse_name}`;
+      if (this.newHorseCard.horse_name === null) {
+        return "ajout d'un nouveau cheval"
+      } else {
+        return `Le cheval à ajouter est : ${this.newHorseCard.horse_name}`;
+      }
     }
   },
   watch: {
@@ -153,7 +198,11 @@ export default {
       },
     showNewCard: function () {
       this.newHorse = true;
+      this.loadOtherData();
       console.log("j'ai appuyé sur le bouton");
+    },
+    ownerNameFormated: function (ownr) {
+      return `${ownr.lastname}  ${ownr.firstname}`
     },
     greet: function (event) {
       // `this` fait référence à l'instance de Vue à l'intérieur de `methods`
@@ -165,6 +214,14 @@ export default {
     },
     ValidateNewwHorse: function() {
         console.log("je vais valider un nouveau cheval");
+        console.log(this.newHorseCard.horse_name);
+        console.log(this.ownerSelected);
+        console.log(this.sexSelected);
+        console.log(this.coatSelected);
+        this.newHorseCard.sex = this.sexSelected;
+        this.newHorseCard.coat = this.coatSelected;
+        //this.newHorseCard.o
+        this.postHorse(this.newHorseCard);
     },
     async getHorses() {
       this.horses = [];
@@ -177,12 +234,41 @@ export default {
         setTimeout(() => resolve(horsesConst), 150);
       });*/
     },
+    async getOwners() {
+      const res = await axios.get(`${apiAddr}/owners`);
+      this.owners = res.data;
+      console.log(this.owners);
+    },
+    async getSex() {
+      const res = await axios.get(`${apiAddr}/characteristic/sex`);
+      this.sexs = res.data;
+      console.log(this.sexs);
+    },
+    async getCoat() {
+      const res = await axios.get(`${apiAddr}/characteristic/coat`);
+      this.coats = res.data;
+      console.log(this.coats);
+    },
+    async postHorse(hrs) {
+      if (hrs.horse_name != null) {
+        const res = await axios.post(`${apiAddr}/horses`, hrs);
+        console.log(res);
+        this.loadHorses();
+      }
+    },
     //we need to create another function, if we call directly getHorses() from created() it doesnt work
     async loadHorses() {
       this.horses = [];
       this.message = "getting the horse, please be patient";
       this.horses = await this.getHorses();
       this.message = "";
+    },
+    async loadOtherData() {
+      console.log("we reach other useful data");
+      this.getOwners();
+      this.getSex();
+      this.getCoat();
+
     }
   },
   created() {
