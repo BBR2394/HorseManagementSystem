@@ -10,7 +10,7 @@
             :class="{ 'is-active': selectedHorse === horse}">
           <span class="title">
               {{ horse.horse_name }}
-            <button class="button is-primary " v-on:click="goToShowMore(horse)" v-show="selectedHorse === horse">+</button>
+            <button class="button is-primary is-light" v-on:click="addMedicIntervention(horse)" v-show="selectedHorse === horse">+</button>
           </span>
         </a>
       </li>
@@ -57,6 +57,25 @@
         </div>
         <p>{{ newHorseCard.name }} </p>
         <button class="button is-primary is-rounded" v-on:click="ValidateNewwHorse" >Validate</button>
+    </div>
+    <div v-show="showMedicCard">
+      {{ fullInfo }}
+      <div class="field">
+        <div class="control">
+          <div class="select">
+              <select v-model="vetSelected">
+                <option v-for="vet in veterinarian" :key="vet.id" >{{ ownerNameFormated(vet) }}</option>
+              </select>
+            </div>
+            <div class="select">
+              <select v-model="medicInterventionSelected">
+                <option v-for="typeMed in typeMedic" :key="typeMed.id" >{{ typeMed.type_medic_name }}</option>
+              </select>
+            </div>
+            <textarea class="textarea" placeholder="Note about the medical intervention" v-model="noteMedic"></textarea>
+            <button class="button is-primary is-rounded" :disabled="checkMedicInfo" v-on:click="ValidateNewwIntervention">Validate Medic Intervention</button>
+        </div>
+      </div>
     </div>
   </div>
     <div class="column">
@@ -157,13 +176,19 @@ export default {
       ownerSelected: undefined,
       sexSelected: undefined,
       coatSelected: undefined,
+      vetSelected: undefined,
+      medicInterventionSelected: undefined,
+      noteMedic: "",
       showMore: false,
+      showMedicCard: false,
       message: "horse list",
       newHorse: false,
       horses: [],
       owners: [],
       coats: [],
       sexs: [],
+      veterinarian: [],
+      typeMedic: [],
       counter: 0,
       newHorseCard: {
             horse_name: null,
@@ -186,15 +211,29 @@ export default {
       } else {
         return `Le cheval à ajouter est : ${this.newHorseCard.horse_name}`;
       }
+    },
+    checkMedicInfo() {
+      if (this.vetSelected != undefined && this.medicInterventionSelected != undefined && this.noteMedic != "") {
+        return false;
+      } else {
+        return true;
+      }
     }
   },
   watch: {
     //if we want to "watch" and react if a data change
   },
   methods: {
-      goToShowMore: function(selectedHorseToShowMore) {
+    addMedicIntervention: function(hrs) {
+      this.loadMedicData();
+      console.log("pour l'ajout d'une intervention medical"),
+      this.showMedicCard = true;
+      console.log(hrs.horse_name);
+
+    },
+    goToShowMore: function(selectedHorseToShowMore) {
           console.log("we are going to show more information from");
-          console.log(selectedHorseToShowMore.name)
+          console.log(selectedHorseToShowMore.horse_name)
       },
     showNewCard: function () {
       this.newHorse = true;
@@ -223,6 +262,14 @@ export default {
         //this.newHorseCard.o
         this.postHorse(this.newHorseCard);
     },
+    ValidateNewwIntervention: function() {
+      //TODO : faire la requete
+      console.log("les infos a envoyer a l'api");
+      console.log(this.vetSelected);
+      console.log(this.medicInterventionSelected);
+      console.log(this.noteMedic);
+      console.log(this.selectedHorse);
+    },
     async getHorses() {
       this.horses = [];
       const res = await axios.get(`${apiAddr}/horses`)
@@ -249,6 +296,16 @@ export default {
       this.coats = res.data;
       console.log(this.coats);
     },
+    async getVet() {
+      const res = await axios.get(`${apiAddr}/medic/vet`);
+      this.veterinarian = res.data;
+      console.log("les veto : " + this.veterinarian);
+    },
+    async getMedicIntervention() {
+      const res = await axios.get(`${apiAddr}/medic/typemedicintervention`);
+      this.typeMedic = res.data;
+      console.log("les medic intervention : " + this.typeMedic);
+    },
     async postHorse(hrs) {
       if (hrs.horse_name != null) {
         const res = await axios.post(`${apiAddr}/horses`, hrs);
@@ -268,7 +325,10 @@ export default {
       this.getOwners();
       this.getSex();
       this.getCoat();
-
+    }, 
+    async loadMedicData() {
+      this.getVet();
+      this.getMedicIntervention();
     }
   },
   created() {
