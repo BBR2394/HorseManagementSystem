@@ -26,9 +26,17 @@ INSERT INTO sex (sex_name) VALUES ('Male');
 INSERT INTO sex (sex_name) VALUES ('Female');
 INSERT INTO sex (sex_name) VALUES ('Gelding');
 
+CREATE TABLE type_medic_intervention ( ID SERIAL PRIMARY KEY, type_medic_name VARCHAR(56));
+INSERT INTO type_medic_intervention (type_medic_name) VALUES ('Vaccine');
+INSERT INTO type_medic_intervention (type_medic_name) VALUES ('Check-up');
+INSERT INTO type_medic_intervention (type_medic_name) VALUES ('Dewormer');
+INSERT INTO type_medic_intervention (type_medic_name) VALUES ('Surgery');
+INSERT INTO type_medic_intervention (type_medic_name) VALUES ('Other');
+
 CREATE TABLE medical_intervention (intervention_id SERIAL PRIMARY KEY,
 note TEXT,
 date TIMESTAMP WITH TIME ZONE,
+type_intervention INTEGER,
 horse_id INTEGER,
 vet_id INTEGER,
 added_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);
@@ -36,7 +44,7 @@ added_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);
 CREATE TABLE veterinarian (vet_id SERIAL PRIMARY KEY,
 lastname VARCHAR(255) NOT NULL ,
 firstname VARCHAR(255) NOT NULL ,
-contact_details_vet SERIAL,
+contact_details_vet VARCHAR(10),
 added_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);
 
 CREATE TABLE stables (
@@ -47,3 +55,4 @@ CREATE TABLE stables (
 	postcode VARCHAR(5),
 	city VARCHAR(255),
 	added_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);
+
