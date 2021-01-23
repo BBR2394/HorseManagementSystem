@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="columns">
-  <div class="column is-three-fifths">
+  <div class="column is-two-fifths">
     <h1>Liste des chevaux</h1>
     <ul class="horse-list">
       <li v-for="horse in horses" :key="horse.id" class="menu-list horse-elem-in-list">
@@ -11,6 +11,7 @@
           <span class="title">
               {{ horse.horse_name }}
             <button class="button is-primary is-light" v-on:click="addMedicIntervention(horse)" v-show="selectedHorse === horse">+</button>
+            <button class="button is-primary is-link is-light" v-on:click="assignToNewStable(horse)" v-show="selectedHorse === horse">-></button>
           </span>
         </a>
       </li>
@@ -58,8 +59,13 @@
         <p>{{ newHorseCard.name }} </p>
         <button class="button is-primary is-rounded" v-on:click="ValidateNewwHorse" >Validate</button>
     </div>
+    
+  </div>
+    <div class="column">
+    Second column
+    <!-- to add medic report -->
     <div v-show="showMedicCard">
-      {{ fullInfo }}
+      <p>Add a medic report</p>
       <div class="field">
         <div class="control">
           <div class="select">
@@ -74,12 +80,11 @@
             </div>
             <textarea class="textarea" placeholder="Note about the medical intervention" v-model="noteMedic"></textarea>
             <button class="button is-primary is-rounded" :disabled="checkMedicInfo" v-on:click="ValidateNewwIntervention">Validate Medic Intervention</button>
+            <button class="button is-danger " v-on:click="showMedicCard = !showMedicCard">Cancel</button>
+
         </div>
       </div>
     </div>
-  </div>
-    <div class="column">
-    Second column
   </div>
       </div>
     </div>
@@ -97,9 +102,9 @@
     mother: "0",
     sex: "3",
 
-firstname: "",
-lastname: "",
-colorname: "unknow",current_owner: "1",
+    firstname: "",
+    lastname: "",
+    colorname: "unknow",current_owner: "1",
     created_on: "2021-01-03T18:45:48.010Z"
   },
   {
@@ -110,9 +115,9 @@ colorname: "unknow",current_owner: "1",
     father: "0",
     mother: "0",
     sex: "1",
-firstname: "",
-lastname: "",
-colorname: "unknow",current_owner: "1",
+    firstname: "",
+    lastname: "",
+    c olorname: "unknow",current_owner: "1",
     created_on: "2021-01-03T18:45:48.010Z"
   },
   {
@@ -159,11 +164,6 @@ colorname: "unknow",current_owner: "1",
   }
 ];*/
 
-/*const coat = [
-    {
-
-    }
-]*/
 import * as axios from 'axios';
 const apiAddr = "http://localhost:5008";
 export default {
@@ -181,12 +181,14 @@ export default {
       noteMedic: "",
       showMore: false,
       showMedicCard: false,
+      showStableCarde: false,
       message: "horse list",
       newHorse: false,
       horses: [],
       owners: [],
       coats: [],
       sexs: [],
+      stables: [],
       veterinarian: [],
       typeMedic: [],
       counter: 0,
@@ -228,6 +230,13 @@ export default {
       this.loadMedicData();
       console.log("pour l'ajout d'une intervention medical"),
       this.showMedicCard = true;
+      console.log(hrs.horse_name);
+
+    },
+    assignToNewStable: function(hrs) {
+      this.loadStables();
+      console.log("assignation d'une nouvelle ecurie"),
+      this.showStableCarde = true;
       console.log(hrs.horse_name);
 
     },
@@ -296,6 +305,11 @@ export default {
       this.coats = res.data;
       console.log(this.coats);
     },
+    async getStables() {
+      const res = await axios.get(`${apiAddr}/stables`);
+      this.stables = res.data;
+      console.log(this.stables);
+    },
     async getVet() {
       const res = await axios.get(`${apiAddr}/medic/vet`);
       this.veterinarian = res.data;
@@ -329,6 +343,9 @@ export default {
     async loadMedicData() {
       this.getVet();
       this.getMedicIntervention();
+    },
+    async loadStables() {
+      this.getStables();
     }
   },
   created() {

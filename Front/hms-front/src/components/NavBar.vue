@@ -51,9 +51,13 @@
         <router-link to="/stableslist">Stables</router-link>
       </a>
       <a class="navbar-item">
-        <router-link to="/about">Owner</router-link>
+        <router-link to="/ownerlist">Owners</router-link>
       </a>
 
+      <a class="navbar-item">
+        <router-link to="/vetlist">Vetirinarians</router-link>
+      </a>
+      
     </div>
 
     <div class="navbar-end">

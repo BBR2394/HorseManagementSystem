@@ -5,6 +5,8 @@ import NiouHome from '../views/NiouHome.vue'
 import Horse from '../components/Horse.vue'
 import HorseList from '../views/HorseList.vue'
 import StablesList from '../views/StablesList.vue'
+import OwnersList from '../views/OwnersList.vue'
+import VetList from '../views/VetList.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -32,6 +34,16 @@ const routes = [
     path: '/stableslist',
     name: 'StablesList',
     component: StablesList
+  },
+  {
+    path: '/ownerlist',
+    name: 'OwnersList',
+    component: OwnersList
+  },
+  {
+    path: '/vetlist',
+    name: 'VetList',
+    component: VetList
   },
   {
     path: '/about',
