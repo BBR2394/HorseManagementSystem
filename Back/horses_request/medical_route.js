@@ -52,6 +52,12 @@ medicRouter.get('/intervention', function (req, res) {
     
 })
 
+medicRouter.post('/intervention', function (req, res) {
+    console.log("POST /vinterventionet");
+    const { lastname, firstname, phone } = req.body;
+
+})
+
 medicRouter.get('/typemedicintervention', function (req, res) {
     console.log("GET /typemedicintervention");
     pgsql_pool.query(`SELECT * FROM ${type_medic_intervention_table_name}`, (error, result) => {

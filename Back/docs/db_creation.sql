@@ -5,6 +5,8 @@ coat NUMERIC,
 father NUMERIC, 
 mother NUMERIC, 
 sex NUMERIC, 
+assigned_vet INTEGER,
+id_stables INTEGER,
 current_owner NUMERIC, 
 added_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);
 
@@ -54,5 +56,6 @@ CREATE TABLE stables (
 	address VARCHAR(255),
 	postcode VARCHAR(5),
 	city VARCHAR(255),
+	place_available INTEGER,
 	added_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);
 
