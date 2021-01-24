@@ -83,20 +83,8 @@ app.use('/owners', ownerRoutes)
 app.use('/authent', authentRoutes);
 app.use('/session', sessionRoutes);
 
-
-app.route('/book')
-  .get(function(req, res) {
-    res.send('Get a random book');
-  })
-  .post(function(req, res) {
-    res.send('Add a book');
-  })
-  .put(function(req, res) {
-    res.send('Update the book');
-  });
-
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.sendFile(__dirname + '/test_views/welcome.html');
 })
 
 app.get('/form', (req, res) => {
@@ -146,5 +134,5 @@ app.listen(port, () => {
 })
 
 // we import another module #horses
-require('./horses_request/get_request.js')(app, poolpgsql);
+require('./horses_request/horse_module.js')(app, poolpgsql);
 //require('./authent/authentication.js')(app, bodyParser);

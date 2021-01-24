@@ -1,3 +1,9 @@
+/**
+ * This file was made in the way to export a module
+ * and it doesn't use the package "router"
+ * So, I will, when I am going to refactor the code, move that in horse_routes
+ */
+
 module.exports = function(app, pgsql) {
     
     const horses_table_name = "horses"
