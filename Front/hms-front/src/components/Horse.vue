@@ -1,4 +1,5 @@
 <template>
+  <!-- I will used this with rops to be better for horse list -->
   <div class="horse">
     <h1> {{ message }} </h1>
     <div class="card">
