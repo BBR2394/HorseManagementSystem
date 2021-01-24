@@ -1,5 +1,5 @@
 # HorseManagementSystem
-![hms_logo](pages/equestrian-park-manager/hms_icone328.png)
+![logo](./logo.png)
 A repository for my project class 
 
 ## General pre requist
