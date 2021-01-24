@@ -23,7 +23,7 @@ const chalk = require('chalk');
 // useful package to manage path to a file
 var path = require('path');
 // package for the db
-const postgresql = require('pg').Pool;
+var postgresql = require('pg').Pool;
 // passort
 const passort = require('passport');
 const cookieParser = require('cookie-parser');
@@ -32,6 +32,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser')
 // for passport too
 const session = require('express-session');
+//CORS to authorize any call on the api (to check for more information)
+var cors = require('cors')
 
 /**
  * postgresql configuration
@@ -58,20 +60,26 @@ app.use(bodyParser.urlencoded({extended: false}));
 //!!! warning dont forget the () https://stackoverflow.com/questions/23207303/no-response-from-simple-expressjs-app
 app.use(cookieParser());
 app.use(session({secret: 'bonjour'}));
+app.use(cors());
 //warning : this require must be here because it initialize passport
 require('./session/passport.js')(app);
 /**
  * external module (files)
  * we add a file for route
  */
-var stables = require('./hms_stable.js')
+var stables = require('./stable_request/hms_stable.js')
 var horseRoute = require('./horses_request/horse_routes.js')
 var authentRoutes = require('./authent/authenticationRoutes.js')
-
-
+var coatRoutes = require('./characteristic_routes/coat_route.js');
+var ownerRoutes = require('./horses_request/owner_route.js');
+var medicRoutes = require('./horses_request/medical_route.js');
+// #routes
 // the routes /stable -> hms_stable.js file #stable
 app.use('/stables', stables);
 app.use('/hrs', horseRoute);
+app.use('/medic', medicRoutes);
+app.use('/characteristic', coatRoutes);
+app.use('/owners', ownerRoutes)
 app.use('/authent', authentRoutes);
 app.use('/session', sessionRoutes);
 

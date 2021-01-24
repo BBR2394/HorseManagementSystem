@@ -1,10 +1,6 @@
 var express = require('express');
 var horseRouter = express.Router();
 
-var express = require('express');
-var horseRouter = express.Router();
-
-
 // define the home page route
 horseRouter.get('/', function(req, res) {
   console.log("GET on /hrs /")
