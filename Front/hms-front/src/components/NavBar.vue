@@ -41,11 +41,14 @@
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
       <a class="navbar-item">
-        <router-link to="/horselist">Horses</router-link>
+        <router-link to="/">Home</router-link>
       </a>
       <a class="navbar-item">
-        Documentation
+        <router-link to="/horselist">Horses</router-link>
       </a>
+      <!--a class="navbar-item">
+        Documentation
+      </a-->
 
       <a class="navbar-item">
         <router-link to="/stableslist">Stables</router-link>
