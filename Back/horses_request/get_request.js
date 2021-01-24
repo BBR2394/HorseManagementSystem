@@ -10,9 +10,9 @@ module.exports = function(app, pgsql) {
             name: req.query.name
         }
         if (params.name != null) {
-            console.log("il y a un nom dans la requete")
-            console.log(params.name)
-            pgsql.query(`SELECT hrs.horse_id, hrs.horse_name, size, lastname, firstname, color_name 
+            //console.log("il y a un nom dans la requete")
+            //console.log(params.name)
+            pgsql.query(`SELECT hrs.horse_id, hrs.horse_name, size, lastname, firstname, color_name, hrs.id_stables 
             FROM ${horses_table_name}  hrs
             LEFT JOIN horse_owner ownr ON ownr.owner_id = hrs.current_owner
             LEFT JOIN coat ct ON ct.id = hrs.coat
@@ -28,14 +28,14 @@ module.exports = function(app, pgsql) {
             });
         }
         else {
-            pgsql.query(`SELECT hrs.horse_id, hrs.horse_name, size, lastname, firstname, color_name 
+            pgsql.query(`SELECT hrs.horse_id, hrs.horse_name, size, lastname, firstname, color_name, hrs.id_stables 
             FROM ${horses_table_name} hrs
             LEFT JOIN horse_owner ownr ON ownr.owner_id = hrs.current_owner
             LEFT JOIN coat ct ON ct.id = hrs.coat`, (error, result) => {
                 console.log(result);
                 if (error) {
                     //debug("LOG-1 : error when query on /horses");
-                    console.log("LOG-1 : error when query on /horses");
+                    //console.log("LOG-1 : error when query on /horses");
                     res.status(400).send('ERROR on GET /horses index.js')
                 }
                 else {
@@ -49,14 +49,16 @@ module.exports = function(app, pgsql) {
         console.log("LOG: POST on /horses");
         //console.log(req);
         const { horse_name, coat, sex } = req.body;
-        console.log(horse_name)
-        console.log(coat)
-        console.log(sex)
+        //console.log(horse_name)
+        //console.log(coat)
+        //console.log(sex)
         var sex_id = null
         var coat_id = null
         var owner_id = null
         if (req.body == null) {
             res.status(206).send("missing information");
+        }else if (horse_name == null) {
+            res.status(206).send("missing information : no horse name given");
         }
         else {
             /*if (coat != null) {
@@ -93,6 +95,41 @@ module.exports = function(app, pgsql) {
         }
     })
 
+    app.patch('/horses', (req, res) => { 
+        console.log("LOG: PATCH on /horses");
+
+    });
+
+    app.post('/horses/move', (req, res) => { 
+        console.log("LOG: POST on /horses/move");
+        const { horse_id, stable_id, horse_name, stable_name } = req.body;
+        //UPDATE horses h SET id_stables = 3 WHERE  horse_id = 7
+        console.log(horse_id)
+        console.log(stable_id)
+        res.send("sto our le moment")
+        if (!horse_name || !stable_name) {
+            pgsql.query(
+                `UPDATE ${horses_table_name} h
+                SET id_stables = $2
+                WHERE horse_id = $1`, 
+                [horse_id, stable_id], 
+                (error, results) => {
+                if (error) {
+                    throw error
+                }
+                else {
+                    console.log(results);
+                    //res.status(201).send(`Horse whit id ${horse_id} mooved to stable id ${stable_id}`)
+                }
+            })
+        } else if (!horse_id || !stable_id) {
+            console.log("changement en focntion du nom")
+        } else {
+            //res.status(206).send("missing information : you must provide both id");
+        }
+        
+    });
+
     app.delete('/horses', (req, res) => { 
         const params = {
             name: req.query.name
@@ -109,5 +146,6 @@ module.exports = function(app, pgsql) {
             res.status(200).send("nothing deleted");
         }
     })
+
 
 }

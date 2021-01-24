@@ -54,7 +54,22 @@ medicRouter.get('/intervention', function (req, res) {
 
 medicRouter.post('/intervention', function (req, res) {
     console.log("POST /vinterventionet");
-    const { lastname, firstname, phone } = req.body;
+    const { vet_id, type_medic_id, report, horse } = req.body;
+    const hrsId = horse.id;
+    if (req.body == null) {
+        res.status(206).send("missing information");
+    } else {
+        pgsql_pool.query(`INSERT INTO ${medic_intervention_table_name} 
+        (horse_id, vet_id, type_intervention, note) VALUES ($1, $2, $3, $4)`, [hrsId, vet_id, type_medic_id, report], (error, results) => {
+            if (error) {
+                throw error
+            }
+            else {
+                console.log(results);
+                res.status(201).send(`intervention medic added report : ${report}`)
+            }
+        })
+    }
 
 })
 
