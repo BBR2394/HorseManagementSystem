@@ -7,6 +7,8 @@ import HorseList from '../views/HorseList.vue'
 import StablesList from '../views/StablesList.vue'
 import OwnersList from '../views/OwnersList.vue'
 import VetList from '../views/VetList.vue'
+import MedIntervLst from '..//views/MedicsIntervention.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -44,6 +46,11 @@ const routes = [
     path: '/vetlist',
     name: 'VetList',
     component: VetList
+  },
+  {
+    path: '/medinterv',
+    name: 'MedicInterventionsLists',
+    component: MedIntervLst
   },
   {
     path: '/about',
