@@ -25,14 +25,14 @@ medicRouter.get('/vet', function (req, res) {
 medicRouter.post('/vet', function (req, res) {
     console.log("POST /vet");
     const { lastname, firstname, phone } = req.body;
-
+    console.log(req.body);
     console.log(`data received ${lastname} ${firstname} `)
     if (req.body == null) {
         console.log("error 1");
         res.status(206).send("missing information");
     } else if (lastname == null || firstname == null || phone == null) {
         console.log("error 1");
-        res.status(206).send("bad information for lkastname firstname or phone");
+        res.status(206).send("bad information for lastname firstname or phone");
     }
     else {
         pgsql_pool.query(`INSERT INTO ${veterinarian_table_name} (lastname, firstname, contact_details_vet) VALUES ($1, $2, $3)`, [lastname, firstname, phone], (error, results) => {
@@ -47,13 +47,26 @@ medicRouter.post('/vet', function (req, res) {
     }
 })
 
+// TODO : add the intervention date
 medicRouter.get('/intervention', function (req, res) {
-    console.log("GET /vinterventionet");
+    console.log("GET /interventionet");
+    pgsql_pool.query(`SELECT type_medic_name, mi.note, horse_name, lastname, firstname FROM medical_intervention mi
+    INNER JOIN type_medic_intervention tp ON tp.id = type_intervention
+    INNER JOIN horses hrs ON hrs.horse_id = mi.horse_id
+    INNER JOIN veterinarian vet ON vet.vet_id = mi.vet_id`, (err, result) => {
+        if (err) {
+            throw err
+        } else {
+            console.log("result ")
+            res.send(result.rows)
+        }
+    });
+
     
 })
 
 medicRouter.post('/intervention', function (req, res) {
-    console.log("POST /vinterventionet");
+    console.log("POST /interventionet");
     const { vet_id, type_medic_id, report, horse } = req.body;
     const hrsId = horse.id;
     if (req.body == null) {

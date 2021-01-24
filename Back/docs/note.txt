@@ -1,1 +1,10 @@
-https://www.postgresqltutorial.com/postgresql-create-table/
+# improvement to do
+-> add a kind of trigram of initial for Vet
+for example : lastname : Dupont, firstname : jean => DupontJ
+!> I interverte lastname and firstname somewhere for the veterinarian ...
+
+
+
+
+
+ps : https://www.postgresqltutorial.com/postgresql-create-table/
