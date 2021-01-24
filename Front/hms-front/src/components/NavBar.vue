@@ -32,9 +32,9 @@
       <a class="navbar-item">
         <router-link to="/vetlist">Vetirinarians</router-link>
       </a>
-      <!--a class="navbar-item">
+      <a class="navbar-item">
         <router-link to="/medinterv">Medical Intervention</router-link>
-      </a-->
+      </a>
       
     </div>
 
