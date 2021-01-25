@@ -21,4 +21,29 @@ ownerRoute.get('/', function (req, res) {
     });
 });
 
+ownerRoute.post('/', function (req, res) {
+    console.log("POST /owner");
+    const { lastname, firstname, phone } = req.body;
+    console.log(req.body);
+    console.log(`data received ${lastname} ${firstname} `)
+    if (req.body == null) {
+        console.log("error 1");
+        res.status(206).send("missing information");
+    } else if (lastname == null || firstname == null || phone == null) {
+        console.log("error 1");
+        res.status(206).send("bad information for lastname firstname or phone");
+    }
+    else {
+        pgsql_pool.query(`INSERT INTO ${owner_table_name} (lastname, firstname, contact_details_owner) VALUES ($1, $2, $3)`, [lastname, firstname, phone], (error, results) => {
+            if (error) {
+                throw error
+            }
+            else {
+                console.log(results);
+                res.status(201).send(`Owner added ${lastname} ${firstname}`)
+            }
+        })
+    }
+})
+
 module.exports = ownerRoute;
