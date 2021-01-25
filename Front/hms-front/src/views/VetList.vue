@@ -22,7 +22,6 @@
           </div>
         </div>
         <div class="column">
-          Second column
             <div v-show="newVet">
                 <input class="input is-primary" type="text" placeholder="lastname" requiredminlength="2" maxlength="255" v-model="newVetCard.lastname" />
                 <input class="input is-primary" type="text" placeholder="lastname" required minlength="2" maxlength="255" v-model="newVetCard.firstname" />

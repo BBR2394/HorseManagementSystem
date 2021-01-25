@@ -43,10 +43,10 @@ export default {
       return `Veterinarian : Dr ${data.lastname} ${data.firstname}`;
     },
     horseName(hrd) {
-        return `Horse : ${hrd}`;    
+      return `Horse : ${hrd}`;
     },
     medType(data) {
-        return `Medical Intervention : ${data}`;
+      return `Medical Intervention : ${data}`;
     }
   },
   methods: {
@@ -63,6 +63,6 @@ export default {
 </script>
 <style>
 .type_medic {
-    color: red;
+  color: red;
 }
 </style>

@@ -22,7 +22,6 @@
           </div>
         </div>
         <div class="column">
-          Second column
             <div v-show="newOwner">
                 <input class="input is-primary" type="text" placeholder="lastname" requiredminlength="2" maxlength="255" v-model="newOwnerCard.lastname" />
                 <input class="input is-primary" type="text" placeholder="lastname" required minlength="2" maxlength="255" v-model="newOwnerCard.firstname" />
@@ -76,9 +75,14 @@ export default {
             this.loadOwnerList();
         },
         validateNewOwner: function() {
-            const ownerFormated = {}
+            const ownerFormated = {
+                "firstname": this.newOwnerCard.firstname,
+                "lastname": this.newOwnerCard.lastname,
+                "phone" : this.newOwnerCard.phone
+            }
             console.log(`verification du nouveau roriétaire ${ownerFormated}`)
             this.sendNewOwner(ownerFormated)
+            this.newOwner = false;
         },
         showNewCard: function() {
             this.newOwner = true;

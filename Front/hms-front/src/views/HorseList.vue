@@ -81,7 +81,6 @@
           </div>
         </div>
         <div class="column">
-          Second column
           <!-- to add medic report -->
           <div v-show="showMedicCard">
             <p>Add a medic report</p>

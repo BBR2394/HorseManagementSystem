@@ -2,11 +2,9 @@
   <div class="home">
     <div class="container">
       <div class="column is-one-third">
-        <p>first column</p>
         <img alt="Vue logo" src="../assets/hms_icone.png" width="258px" height="258ppx">
       </div> 
       <div class="column ">
-        <p>second column</p>
         <h1>Welcom to Horse Management System</h1>
         <p>This is a new alication and innovative to manage their horse in our stable</p>
       </div>
