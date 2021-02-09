@@ -412,6 +412,7 @@ export default {
       console.log(typeName)
       console.log(report)
       console.log(horse)
+      
     },
     //we need to create another function, if we call directly getHorses() from created() it doesnt work
     async loadHorses() {
