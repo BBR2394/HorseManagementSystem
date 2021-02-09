@@ -22,11 +22,13 @@ medicRouter.get('/vet', function (req, res) {
     });
 })
 
+//to add a new vet in the list
+// Warning : the trigram must be send when we create the new vet
 medicRouter.post('/vet', function (req, res) {
     console.log("POST /vet");
-    const { lastname, firstname, phone } = req.body;
+    const { lastname, firstname, phone, trig } = req.body;
     console.log(req.body);
-    console.log(`data received ${lastname} ${firstname} `)
+    console.log(`data received lastname : ${lastname} firstname : ${firstname} TRIGRAMME : ${trig}`)
     if (req.body == null) {
         console.log("error 1");
         res.status(206).send("missing information");
@@ -35,7 +37,7 @@ medicRouter.post('/vet', function (req, res) {
         res.status(206).send("bad information for lastname firstname or phone");
     }
     else {
-        pgsql_pool.query(`INSERT INTO ${veterinarian_table_name} (lastname, firstname, contact_details_vet) VALUES ($1, $2, $3)`, [lastname, firstname, phone], (error, results) => {
+        pgsql_pool.query(`INSERT INTO ${veterinarian_table_name} (lastname, firstname, trigramme, phone) VALUES ($1, $2, $3, $4)`, [lastname, firstname, trig, phone], (error, results) => {
             if (error) {
                 throw error
             }
@@ -65,6 +67,7 @@ medicRouter.get('/intervention', function (req, res) {
     
 })
 
+//to add a new intervention
 medicRouter.post('/intervention', function (req, res) {
     console.log("POST /interventionet");
     const { vet_id, type_medic_id, report, horse } = req.body;

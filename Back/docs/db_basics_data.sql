@@ -14,4 +14,10 @@ INSERT INTO stables (stable_name, nb_addr, address, postcode, city, place_availa
 INSERT INTO stables (stable_name, nb_addr, address, postcode, city, place_available) VALUES ('Le cheval c est TOP', 42, 'rue de Paris', 59666, 'Nord-en-Paumé', 42);
 INSERT INTO stables (stable_name, nb_addr, address, postcode, city, place_available) VALUES ('la grande écurie', 1, 'rRue de Gouvieux', 60500, 'Chantilly', 250);
 
+INSERT INTO veterinarian (lastname, firstname, trigramme, phone) 
+VALUES ('Dupont', 'Jean', 'JDU', '0642424242');
+INSERT INTO veterinarian  (lastname, firstname, trigramme, phone) 
+VALUES ('Render', 'John', 'JRE', '0636363636');
+INSERT INTO veterinarian (lastname, firstname, trigramme, phone) 
+VALUES ('La-Foret', 'Martin', 'MLF', '0612121212');
 
