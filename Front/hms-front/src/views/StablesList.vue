@@ -1,5 +1,6 @@
 <template lang="fr">
     <div>
+    <div class="container">
     <div class="columns">
 
         <div class="column is-two-fifths">
@@ -25,6 +26,7 @@
             </div>
         </div>
     </div> 
+    </div>
     </div>
 </template>
 <script>

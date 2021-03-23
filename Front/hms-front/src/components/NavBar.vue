@@ -35,7 +35,9 @@
       <a class="navbar-item">
         <router-link to="/medinterv">Medical Intervention</router-link>
       </a>
-      
+      <a class="navbar-item">
+        <router-link to="/testview">View to Test Bulma</router-link>
+      </a>
     </div>
 
     <div class="navbar-end">

@@ -88,7 +88,7 @@
               <div class="control">
                 <div class="select">
                   <select v-model="vetSelected">
-                    <option v-for="vet in veterinarian" :key="vet.id">{{ ownerNameFormated(vet) }}</option>
+                    <option v-for="vet in veterinarian" :key="vet.id">{{ toutVet(vet) }}</option>
                   </select>
                 </div>
                 <div class="select">
@@ -224,6 +224,7 @@ export default {
       sexSelected: undefined,
       coatSelected: undefined,
       vetSelected: undefined,
+      vetObjectSelected: undefined,
       medicInterventionSelected: undefined,
       noteMedic: "",
       showMore: false,
@@ -254,6 +255,9 @@ export default {
       return `Le cheval sélectionné est : ${str}`;
     }
   },
+  /*les computed reagisse quand une valeur change : 
+  "computed properties are cached based on their reactive dependencies"
+  */
   computed: {
     fullInfo() {
       if (this.newHorseCard.horse_name === null) {
@@ -276,6 +280,7 @@ export default {
   },
   watch: {
     //if we want to "watch" and react if a data change
+    
   },
   methods: {
     addMedicIntervention: function(hrs) {
@@ -325,6 +330,19 @@ export default {
     ownerNameFormated: function(ownr) {
       return `${ownr.lastname}  ${ownr.firstname}`;
     },
+    //I must change the name of this function ^^
+    //I have created this function to keep the object that corespond to the veterinarian selected
+    //with the dropdown and v-model, I keep only the name
+    //however two vet can have the same name
+    //that why i keep the object, to keep the id
+    // WARINING It doesnt work
+    toutVet: function (v) {
+      console.log('tout vet');
+      console.log(v)
+      this.vetObjectSelected = v;
+      console.log(this.vetSelected)
+      return `${v.lastname}  ${v.firstname}`;
+    },
     greet: function(event) {
       // `this` fait référence à l'instance de Vue à l'intérieur de `methods`
       alert("Bonjour " + this.name + " !");
@@ -348,10 +366,14 @@ export default {
       //TODO : faire la requete
       console.log("les infos a envoyer a l'api");
       console.log(this.vetSelected);
+      console.log(this.vetObjectSelected)
       console.log(this.medicInterventionSelected);
       console.log(this.noteMedic);
       console.log(this.selectedHorse);
-
+      const medTemp = this.typeMedic.find(elem => elem.type_medic_name == this.medicInterventionSelected);
+      console.log(medTemp)
+      console.log("------")
+      this.posttMedicReport(this.vetObjectSelected, medTemp, this.noteMedic, this.selectedHorse)
     },
     async getHorses() {
       this.horses = [];
@@ -407,12 +429,16 @@ export default {
       console.log(res);
       this.loadHorses();
     },
-    async posttMedicReport(vetName, typeName, report, horse) {
-      console.log(vetName)
-      console.log(typeName)
+    async posttMedicReport(vet, medType, report, horse) {
+      console.log("post medi intervention")
+      console.log(vet)
+      console.log(medType)
       console.log(report)
       console.log(horse)
-      
+      console.log("FIN post medi intervention")
+      const res = await axios.post(`${apiAddr}/medic/intervention`, {"vet_id": vet.vet_id, "horse":horse, "type_medic_id": medType.id, "report": report });
+      console.log(res)
+      this.loadHorses();
     },
     //we need to create another function, if we call directly getHorses() from created() it doesnt work
     async loadHorses() {
