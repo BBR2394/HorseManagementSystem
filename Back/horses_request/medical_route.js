@@ -51,11 +51,12 @@ medicRouter.post('/vet', function (req, res) {
 
 // TODO : add the intervention date
 medicRouter.get('/intervention', function (req, res) {
-    console.log("GET /interventionet");
-    pgsql_pool.query(`SELECT type_medic_name, mi.note, horse_name, lastname, firstname FROM medical_intervention mi
-    INNER JOIN type_medic_intervention tp ON tp.id = type_intervention
-    INNER JOIN horses hrs ON hrs.horse_id = mi.horse_id
-    INNER JOIN veterinarian vet ON vet.vet_id = mi.vet_id`, (err, result) => {
+    console.log("GET /intervention ici");
+    pgsql_pool.query(`SELECT type_medic_name, mi.note, horse_name, lastname, firstname 
+    FROM medical_intervention mi
+    LEFT JOIN type_medic_intervention tp ON tp.id = type_intervention
+    LEFT JOIN horses hrs ON hrs.horse_id = mi.horse_id
+    LEFT JOIN veterinarian vet ON vet.vet_id = mi.vet_id`, (err, result) => {
         if (err) {
             throw err
         } else {
@@ -71,17 +72,20 @@ medicRouter.get('/intervention', function (req, res) {
 medicRouter.post('/intervention', function (req, res) {
     console.log("POST /interventionet");
     const { vet_id, type_medic_id, report, horse } = req.body;
-    const hrsId = horse.id;
+
+    const hrsId = horse.horse_id;
+    console.log(`${vet_id}, ${type_medic_id}, ${report}, ${hrsId} ${horse}`)
     if (req.body == null) {
         res.status(206).send("missing information");
     } else {
         pgsql_pool.query(`INSERT INTO ${medic_intervention_table_name} 
         (horse_id, vet_id, type_intervention, note) VALUES ($1, $2, $3, $4)`, [hrsId, vet_id, type_medic_id, report], (error, results) => {
             if (error) {
+                console.log("ERROR")
                 throw error
             }
             else {
-                console.log(results);
+                console.log(`tou c'est bien passé ${results}`);
                 res.status(201).send(`intervention medic added report : ${report}`)
             }
         })
