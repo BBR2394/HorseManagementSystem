@@ -13,7 +13,8 @@ module.exports = function(app, pgsql) {
     app.get('/horses', (req, res) => {
         console.log("LOG: GET on /horses");
         const params = {
-            name: req.query.name
+            name: req.query.name,
+            id: req.query.id
         }
         if (params.name != null) {
             //console.log("il y a un nom dans la requete")
@@ -26,6 +27,21 @@ module.exports = function(app, pgsql) {
                 console.log("le resultat : " + result);
                 if (error) {
                     console.log("LOG-1bis : error when query on /horses?name="+params.name);
+                    res.status(400).send('ERROR on GET /horses index.js')
+                }
+                else {
+                    res.send(result.rows)
+                }
+            });
+        } else if (params.id != null) {
+            console.log("recuperation d'un cheval en fonction de son id ")
+            console.log(`id = ${params.id}`)
+            pgsql.query(`SELECT *
+            FROM ${horses_table_name}  hrs
+            WHERE horse_id='${params.id}'`, (error, result) => {
+                console.log("le resultat : " + result);
+                if (error) {
+                    console.log("LOG-1 id : error when query on /horses?name="+params.id);
                     res.status(400).send('ERROR on GET /horses index.js')
                 }
                 else {
